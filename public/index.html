@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>夜放千燈 - 喵魔人製作</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Canvas 層 -->
+    <canvas id="skyCanvas"></canvas>
+
+    <!-- UI 層 -->
+    <div class="ui-layer">
+        <header>
+            <h1 class="site-title">夜放千燈</h1>
+            <p class="site-subtitle">深夜裡千盞心願飄向星河</p>
+        </header>
+
+        <div class="top-right-controls">
+            <button id="btnOpenCreate" class="btn-primary">🏮 點亮心願</button>
+        </div>
+
+        <div class="bottom-controls">
+            <button id="btnLoadMore" class="btn-secondary" style="display:none;">載入更多天燈 ✨</button>
+        </div>
+
+        <footer>
+            <p>✨ 喵魔人製作 ✨ <span id="adminTrigger" title="管理者登入">🔒</span></p>
+        </footer>
+    </div>
+
+    <!-- Modal: 詳情卡片 (檢視他人天燈) -->
+    <div id="detailModal" class="modal hidden">
+        <div class="modal-content card detail-card">
+            <button class="btn-close">&times;</button>
+            <div class="lantern-icon-large"></div>
+            <span class="wish-tag"></span>
+            <h2 class="author-display"></h2>
+            <p class="message-display"></p>
+            <div class="meta-info">
+                <span class="time-display"></span>
+            </div>
+            
+            <!-- 管理者刪除按鈕 (預設隱藏) -->
+            <div id="adminControls" class="hidden" style="margin-top:15px; border-top:1px solid #eee; padding-top:10px;">
+                <button id="btnAdminDelete" class="btn-danger">🗑️ 刪除此天燈 (Admin)</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: 製作流程 -->
+    <div id="createModal" class="modal hidden">
+        <div class="modal-content card create-card">
+            <button class="btn-close">&times;</button>
+            
+            <!-- 編輯天燈 -->
+            <div class="edit-layout">
+                <div class="form-section">
+                    <h2>許下你的心願</h2>
+                    <div class="input-group">
+                        <label>你的名稱</label>
+                        <input type="text" id="authorName" maxlength="20" placeholder="例如：喵魔人">
+                    </div>
+                    <div class="input-group">
+                        <label>心願類型</label>
+                        <div class="radio-group" id="categoryGroup">
+                            <button class="cat-btn" data-val="愛情">愛情💕</button>
+                            <button class="cat-btn" data-val="健康">健康💪</button>
+                            <button class="cat-btn" data-val="事業">事業🚀</button>
+                            <button class="cat-btn" data-val="學業">學業📚</button>
+                            <button class="cat-btn" data-val="財富">財富💰</button>
+                            <button class="cat-btn" data-val="其他">其他🌟</button>
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <label>心願內容 (<span id="charCount">0</span>/100)</label>
+                        <textarea id="messageInput" maxlength="100" placeholder="寫下你的祝福..."></textarea>
+                    </div>
+                    <div class="input-group">
+                        <label>天燈顏色</label>
+                        <div class="color-picker" id="colorPicker">
+                            <!-- 顏色選項由 JS 生成 -->
+                        </div>
+                    </div>
+                </div>
+                <div class="preview-section">
+                    <div id="lanternPreview"></div>
+                    <p class="preview-hint">即時預覽</p>
+                </div>
+            </div>
+            <div class="step-footer">
+                <button id="btnRelease" class="btn-action fire-btn" disabled>點火釋放 🔥</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: 管理者登入 -->
+    <div id="adminModal" class="modal hidden">
+        <div class="modal-content card" style="max-width: 350px; text-align: center;">
+            <button class="btn-close">&times;</button>
+            <h2>管理者登入</h2>
+            <input type="password" id="adminPassword" placeholder="輸入密碼" style="width:100%; padding:10px; margin:20px 0; border:1px solid #ccc; border-radius:5px;">
+            <button id="btnAdminLogin" class="btn-action">登入</button>
+            <p id="adminError" class="error-msg"></p>
+        </div>
+    </div>
+
+    <!-- 訊息提示 (Toast) -->
+    <div id="toast" class="toast hidden"></div>
+
+    <!-- 1. 引入 Firebase SDK (必須依照順序) -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+
+    <!-- 2. 你的 JS 檔案 -->
+    <script src="js/api.js"></script> 
+    <script src="js/lantern.js"></script>
+    <script src="js/stars.js"></script>
+    <script src="js/modal.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>
